@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Available Polls</title>
+    <style>
+
+        body { font-family: sans-serif; margin: 2em; }
+        .poll-card { border: 1px solid #ccc; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+        .poll-question { font-size: 1.5em; margin-bottom: 12px; }
+        .option-button { display: inline-block; border: 1px solid #007bff; color: #007bff; padding: 8px 12px; margin: 4px; border-radius: 20px; text-decoration: none; }
+    </style>
+</head>
+<body>
+<h1>Available Polls</h1>
+
+<div th:each="poll : ${polls}" class="poll-card">
+
+    <h2 class="poll-question" th:text="${poll.question}">Poll Question Text</h2>
+
+    <div>
+        <div th:each="option : ${poll.options}" style="display: inline-block;">
+            <form th:action="@{/polls/{pollId}/vote(pollId=${poll.id})}" method="post" style="display: inline-block;">
+                <input type="hidden" name="voteOption" th:value="${option.voteOption}" />
+                <button type="submit" class="option-button">
+                    <span th:text="${option.voteOption}">Option Text</span>
+                    (<span th:text="${option.voteCount}">0</span> votes)
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
